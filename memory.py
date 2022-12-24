@@ -111,3 +111,64 @@ def start_test():
         show_question()
 
 anser = [rbtn_1,rbtn_2,rbtn_3,rbtn_4]
+
+def ask(q):
+    shuffle(anser)
+    anser[0].setText(q.right_anser)
+    anser[1].setText(q.wroung1)
+    anser[2].setText(q.wroung2)
+    anser[3].setText(q.wroung3)
+    Lb_Question.setText(q.qwestion)
+    Lb_Correct.setText(q.right_anser)
+    show_question()
+
+
+def shw_answer():
+    if anser[0].isChecked():
+        shw_correct('Правильно')
+        window.score += 1
+    else:
+        shw_correct('Не правильно')
+    print('Задано вопросов:',window.total,'\nВерный ответов:',window.score,'\nРейтинг:', window.score/window.total * 100,'%')
+def next_qustion():
+    window.total +=1
+    # window.cur_questio +=1
+    #if window.cur_questio == len(qwestion_list):
+     #   window.cur_questio = 0
+    cur_questio = randint(0,len(qwestion_list)-1)
+    q = qwestion_list[cur_questio]
+    ask(q)
+    
+def click_OK():
+    if btn_ok.text() == 'Ответить':
+        shw_answer()
+    else:
+        next_qustion()
+
+def shw_correct(res):
+    lb_Result.setText(res)
+    show_result()
+
+
+q = Quvasho('Как называеют день девушик','8 марта','6 марта','1 октебря','1 апреля') 
+q1 = Quvasho('Как зовут призидента Росси:','Путин','Укашенка','Зеленский','Абама')
+q2 = Quvasho('Как самая быстрая машина в мире:','Бугатти','Ламбаргини','Ферари','матиз')
+qwestion_list.append(q)
+qwestion_list.append(q1)
+qwestion_list.append(q2)
+
+
+btn_ok.clicked.connect(click_OK)
+
+
+window = QWidget()
+#window.cur_questio = -1
+window.total = 0
+window.score = 0
+next_qustion()
+window.setLayout(Layout_card)
+window.setWindowTitle('Memory Card')
+window.show()
+
+
+app.exec_()
